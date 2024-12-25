@@ -1,0 +1,22 @@
+/* Add any custom Video.js styles here */
+.video-js {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+}
+
+.video-js .vjs-control-bar {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.video-js .vjs-big-play-button {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+} 

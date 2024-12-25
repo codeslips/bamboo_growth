@@ -1,0 +1,272 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { loadPyodide } from 'pyodide';
+
+const PYODIDE_VERSION = 'v0.26.3';
+
+function WebPythonTurtle() {
+  const [pyodide, setPyodide] = useState(null);
+  const [code, setCode] = useState('');
+  const [output, setOutput] = useState('');
+  const [canvasHeight, setCanvasHeight] = useState(400);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    async function loadPyodideInstance() {
+      const pyodideInstance = await loadPyodide({
+        indexURL: `https://cdn.jsdelivr.net/pyodide/${PYODIDE_VERSION}/full/`,
+      });
+      setPyodide(pyodideInstance);
+
+      // Define our Turtle class and related functions
+      pyodideInstance.runPython(`
+        import js
+        import math
+
+        class Turtle:
+            def __init__(self):
+                self.canvas = js.document.getElementById('turtleCanvas')
+                self.ctx = self.canvas.getContext('2d')
+                self.x = self.canvas.width / 2
+                self.y = self.canvas.height / 2
+                self.angle = 0
+                self.is_pen_down = True
+                self.pen_color = 'black'
+                self.pen_size = 0.1
+                self.fill_color = 'black'
+
+            def forward(self, distance):
+                new_x = self.x + distance * math.cos(math.radians(self.angle))
+                new_y = self.y + distance * math.sin(math.radians(self.angle))
+                if self.is_pen_down:
+                    self.ctx.beginPath()
+                    self.ctx.moveTo(self.x, self.y)
+                    self.ctx.lineTo(new_x, new_y)
+                    self.ctx.stroke()
+                self.x, self.y = new_x, new_y
+
+            def backward(self, distance):
+                self.forward(-distance)
+
+            def right(self, degrees):
+                self.angle -= degrees
+                self.angle %= 360
+
+            def left(self, degrees):
+                self.right(-degrees)
+
+            def penup(self):
+                self.is_pen_down = False
+
+            def pendown(self):
+                self.is_pen_down = True
+
+            def pencolor(self, color):
+                self.pen_color = color
+                self.ctx.strokeStyle = color
+
+            def fillcolor(self, color):
+                self.fill_color = color
+                self.ctx.fillStyle = color
+
+            def color(self, pen_color, fill_color=None):
+                self.pencolor(pen_color)
+                if fill_color is None:
+                    self.fillcolor(pen_color)
+                else:
+                    self.fillcolor(fill_color)
+
+            def pensize(self, size):
+                self.pen_size = size
+                self.ctx.lineWidth = size
+
+            def begin_fill(self):
+                self.ctx.beginPath()
+                self.ctx.moveTo(self.x, self.y)
+
+            def end_fill(self):
+                self.ctx.closePath()
+                self.ctx.fill()
+
+            def circle(self, radius, extent=None):
+                if extent is None:
+                    extent = 360
+                steps = int(abs(extent))
+                for _ in range(steps):
+                    self.forward(2 * math.pi * radius / steps)
+                    self.left(extent / steps)
+
+            def dot(self, size=None, color=None):
+                old_pencolor = self.pen_color
+                old_pensize = self.pen_size
+                old_is_pen_down = self.is_pen_down
+                
+                if color:
+                    self.pencolor(color)
+                if size:
+                    self.pensize(size)
+                else:
+                    self.pensize(max(self.pen_size + 4, self.pen_size * 2))
+                
+                self.pendown()
+                self.ctx.beginPath()
+                self.ctx.arc(self.x, self.y, self.pen_size / 2, 0, 2 * math.pi)
+                self.ctx.fill()
+                
+                self.pencolor(old_pencolor)
+                self.pensize(old_pensize)
+                self.is_pen_down = old_is_pen_down
+
+            def clear(self):
+                self.ctx.clearRect(0, 0, 600, 400)
+                self.goto(300, 250)
+                self.angle = 0
+
+            def goto(self, new_x, new_y):
+                if self.is_pen_down:
+                    self.ctx.beginPath()
+                    self.ctx.moveTo(self.x, self.y)
+                    self.ctx.lineTo(new_x, new_y)
+                    self.ctx.stroke()
+                self.x, self.y = new_x, new_y
+
+            def setheading(self, new_angle):
+                self.angle = new_angle % 360
+
+            # Aliases
+            fd = forward
+            bk = backward
+            back = backward
+            rt = right
+            lt = left
+            seth = setheading
+
+        # Create a global turtle instance
+        turtle = Turtle()
+
+        # Define global functions that use the turtle instance
+        def forward(distance):
+            turtle.forward(distance)
+
+        def backward(distance):
+            turtle.backward(distance)
+
+        def right(degrees):
+            turtle.right(degrees)
+
+        def left(degrees):
+            turtle.left(degrees)
+
+        def penup():
+            turtle.penup()
+
+        def pendown():
+            turtle.pendown()
+
+        def pencolor(color):
+            turtle.pencolor(color)
+
+        def fillcolor(color):
+            turtle.fillcolor(color)
+
+        def color(pen_color, fill_color=None):
+            turtle.color(pen_color, fill_color)
+
+        def pensize(size):
+            turtle.pensize(size)
+
+        def begin_fill():
+            turtle.begin_fill()
+
+        def end_fill():
+            turtle.end_fill()
+
+        def circle(radius, extent=None):
+            turtle.circle(radius, extent)
+
+        def dot(size=None, color=None):
+            turtle.dot(size, color)
+
+        def clear():
+            turtle.clear()
+
+        def goto(new_x, new_y):
+            turtle.goto(new_x, new_y)
+
+        def setheading(new_angle):
+            turtle.setheading(new_angle)
+
+        # Aliases
+        fd = forward
+        bk = backward
+        back = backward
+        rt = right
+        lt = left
+        seth = setheading
+      `);
+    }
+    loadPyodideInstance();
+  }, []);
+
+  useEffect(() => {
+    // Update canvas size when window is resized
+    function handleResize() {
+      if (canvasRef.current) {
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = canvasHeight;
+        // Redraw the turtle's state here if needed
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial resize
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [canvasHeight]);
+
+  const runCode = async () => {
+    if (!pyodide) return;
+    try {
+      setOutput('');
+      await pyodide.runPythonAsync(code);
+      setOutput('Drawing completed!');
+    } catch (error) {
+      setOutput(`Error: ${error.message}`);
+    }
+  };
+
+  return (
+    <div style={{ width: '96%', overflow: 'hidden' }}>
+      <canvas
+        id="turtleCanvas"
+        ref={canvasRef}
+        style={{ width: '100%', height: `${canvasHeight}px`, border: '1px solid black' }}
+      ></canvas>
+      <div>
+        <label htmlFor="canvasHeight">Canvas Height: </label>
+        <input
+          type="number"
+          id="canvasHeight"
+          value={canvasHeight}
+          onChange={(e) => setCanvasHeight(Number(e.target.value))}
+          min="100"
+          max="2000"
+        />
+      </div>
+      <br />
+      <textarea
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        rows={10}
+        style={{ width: '100%' }}
+        placeholder="Enter Python code here"
+      />
+      <br />
+      <button onClick={runCode} disabled={!pyodide}>
+        Run Python Code
+      </button>
+      <pre>{output}</pre>
+    </div>
+  );
+}
+
+export default WebPythonTurtle;

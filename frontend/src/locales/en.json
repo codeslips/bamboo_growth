@@ -1,0 +1,27 @@
+{
+  "appName": "Bamboo Growth Learning Platform",
+  "course": "Course",
+  "userProfile": "User Profile",
+  "languageSelection": "Language Selection",
+  "speed": {
+    "particularlySlowLabel": "Particularly Slow",
+    "slowLabel": "Slow",
+    "normalLabel": "Normal"
+  },
+  "my-lessons": "My Lessons",
+  "my-learning": "My Learning",
+  "my-student-lessons": "Student Lessons",
+  "lessons": "Lessons",
+  "lesson-types": "Lesson Types",
+  "users": "Users",
+  "groups": "Groups",
+  "pages": "Pages",
+  "joined": "Joined",
+  "logout": "Logout",
+  "learning-results": "Learning Results",
+  "share-learning-result": "Share Learning Result",
+  "open-share-page": "Open Share Page",
+  "close": "Close",
+  "learning-timeline": "Learning Timeline",
+  "more": "More"
+}

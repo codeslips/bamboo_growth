@@ -1,0 +1,27 @@
+{
+  "appName": "Bamboo Growth",
+  "course": "课程",
+  "userProfile": "用户资料",
+  "languageSelection": "语言选择",
+  "speed": {
+    "particularlySlowLabel": "特别慢",
+    "slowLabel": "慢速",
+    "normalLabel": "正常"
+  },
+  "my-lessons": "我的课程",
+  "my-learning": "我的学习",
+  "my-student-lessons": "学生课程",
+  "lessons": "课程",
+  "lesson-types": "课程类型",
+  "users": "用户",
+  "groups": "群组",
+  "pages": "页面",
+  "joined": "加入",
+  "logout": "登出",
+  "learning-results": "学习结果",
+  "share-learning-result": "分享学习结果",
+  "open-share-page": "打开分享页面",
+  "close": "关闭",
+  "learning-timeline": "学习时间线",
+  "more": "更多"
+}

@@ -1,0 +1,27 @@
+{
+  "appName": "Nom de Votre Application",
+  "course": "Cours",
+  "userProfile": "Profil Utilisateur",
+  "languageSelection": "Sélection de la Langue",
+  "speed": {
+    "particularlySlowLabel": "Particulièrement Lent",
+    "slowLabel": "Lent",
+    "normalLabel": "Normal"
+  },
+  "my-lessons": "Mes Leçons",
+  "my-learning": "Mon Apprentissage",
+  "my-student-lessons": "Leçons de Étudiants",
+  "lessons": "Leçons",
+  "lesson-types": "Types de Leçons",
+  "users": "Utilisateurs",
+  "groups": "Groupes",
+  "pages": "Pages",
+  "joined": "Rejoint",
+  "logout": "Déconnexion",
+  "learning-results": "Résultats d'Apprentissage",
+  "share-learning-result": "Partager le Résultat d'Apprentissage",
+  "open-share-page": "Ouvrir la Page de Partage",
+  "close": "Fermer",
+  "learning-timeline": "Chronologie d'Apprentissage",
+  "more": "Plus"
+}
