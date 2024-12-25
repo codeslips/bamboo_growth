@@ -3,6 +3,8 @@
 ## Project Description
 The Course Management System is an innovative platform designed to enhance the educational experience for both teachers and students. This open-source project provides a comprehensive suite of tools that allow educators to create custom course types, manage student learning, and conduct evaluations. For students, it offers features for course learning, note-taking, and learning path analysis. The system supports various preset course types, including programming, English reading aloud, English dubbing, book reading, and general courses.
 
+![Home Page](./docs/resources/home.png)
+
 ## Core Functions
 - **For Teachers:**
   - Create custom course types.
@@ -68,6 +70,11 @@ To set up the project locally, follow these steps:
 
 4. **Access the application:**
    Open your browser and navigate to `http://localhost:3000` for the front end.
+
+
+## Speaking Course
+
+![Speaking Course](./docs/resources/speaking.png)
 
 ## Features
 - Customizable course types for diverse learning experiences.
